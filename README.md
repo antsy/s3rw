@@ -16,5 +16,6 @@ When .txt file is uploaded to a S3 bucket the deployed Lambda will trigger and r
 
 * Edit `serverless.yml` to match your AWS profile definition and your bucket name
   * Note: the Serverless will create bucket with the given name, so don't create it yourself
+* Build with `make`
 * Deploy with `serverless deploy`
 * Throw some file (with .txt suffix) into your bucket and see how it gets duplicated by the triggered Lambda
