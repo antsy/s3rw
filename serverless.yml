@@ -1,0 +1,44 @@
+# This project was initialized using Serverless template:
+#    aws-go-dep
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+
+service: s3rw
+
+custom:
+  bucket: antti-nberg
+  bucketArn: arn:aws:s3:::antti-nberg/*
+
+provider:
+  name: aws
+  runtime: go1.x
+  region: eu-west-1
+  stage: dev
+  profile: antti
+  environment:
+    BUCKET_NAME: ${self:custom.bucket}
+  iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - "s3:ListBucket"
+         - "s3:GetObject"
+         - "s3:PutObject"
+       Resource: ${self:custom.bucketArn}
+
+package:
+ exclude:
+   - ./**
+ include:
+   - ./bin/**
+
+functions:
+  s3readwrite:
+    handler: bin/s3rw
+    events:
+      - s3:
+          bucket: ${self:custom.bucket}
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .txt
+
